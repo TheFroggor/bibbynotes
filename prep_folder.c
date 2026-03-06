@@ -9,7 +9,7 @@ int prep_folder_exists (const char *notes_dir){
         perror("folder doesn't exist.\n");
         printf("do you wish to create default folder?Y/N\n");
         scanf(" %c", &ans);
-        if (ans == "Y" | ans == "y"){
+        if (ans == 'Y' || ans == 'y'){
            if ( mkdir(notes_dir, 0755) == 0){
                 printf("folder created.\n");
                 return 0;
