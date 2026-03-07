@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <funcs.h>
+#include "funcs.h"
+#include <sys/stat.h>
 
 int make_new_note(const char *notes_dir){
     int last_num = 0;
@@ -16,13 +17,16 @@ int make_new_note(const char *notes_dir){
     }
     int new_num = last_num + 1;
     char nname[256];
-    snprintf(nname, sizeof(nname), "note_%02d_%s.txt", new_num, today);
+    snprintf(nname, sizeof(nname), "note_%d_%s.txt", new_num, today);
     char cmd[512];
     char fullpath[512];
     snprintf(fullpath, sizeof(fullpath), "%s/%s", notes_dir, nname);
     snprintf(cmd, sizeof(cmd), "nano \"%s\"", fullpath);
     if (system(cmd) != 0){
         return -1;
+    }
+    if(chmod(fullpath, 0444) != 0){
+        perror("chmod");
     }
     return 0;
 }
